@@ -5,11 +5,20 @@
 %
 % PJT w/ HDL 2019-10-24
 
+[status,hostname]=system('echo $HOSTNAME'); % are we on phase or laptop?
+
 tic
 poolobj = gcp('nocreate');
 if max(size(poolobj))==0
-    parpool(4) % start a pool of four workers if not already running
+    if strcmp(hostname(1:end-1),'phase.MATH.CWRU.Edu')
+        parpool(6) % start a pool of six workers if not already running
+    elseif strcmp(hostname(1:end-1),'entropy.MATH.CWRU.Edu')
+        parpool(6)
+    else
+        parpool(4) % start a pool of four workers if not already running
+    end
 end
+
 
 figure
 %num_force=11;
@@ -17,10 +26,10 @@ figure
 %fvec=linspace(0,.05,num_force);
 %fvec=logspace(-1,1,num_force);
 %fvec=linspace(0,1,num_force);
-%fvec=0:.001:.12;
+fvec=0:.001:.2;
 %fvec=0.116:.00005:.117;
-fvec=sort([0:.001:.12,0.116:.00005:.117]);
-%fvec=0.11620; % near bifurcation point
+%fvec=sort([0:.001:.12,0.116:.00005:.117]);
+%%fvec=0.11620; % near bifurcation point
 num_force=length(fvec);
 S_rate_in=nan(size(fvec));
 parfor j=1:length(fvec)
@@ -30,7 +39,7 @@ parfor j=1:length(fvec)
     M.tmax=110;
     M.yinit(8)=force; % Force is the 8th "variable".
     M.eps1=1e-3;
-    M.eps2=1e-3;
+    M.eps2=1e-4;
     M.eps3=1e-3;
     M.solve;
     t=M.t;
@@ -70,7 +79,7 @@ parfor j=1:length(fvec)
     %beep
     
 end
-save test_lyttle_vary_force20191115_phase_a.mat
+save test_lyttle_vary_force_eps1_1e-3_eps2_1e-4_eps3_1e-3.mat
     
 
 %% last figure
