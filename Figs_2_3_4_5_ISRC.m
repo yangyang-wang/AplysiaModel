@@ -1,4 +1,4 @@
-% Generate Fig.2,Fig.3 and Fig.5
+% Generate Fig.2,Fig.3, Fig.4 (enlargement of Fig.2) and Fig.5
 
 %% Preliminary Simulations
 % Find IC at closing and unperturbed period
